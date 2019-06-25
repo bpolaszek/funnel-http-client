@@ -1,0 +1,49 @@
+{
+  "name": "bentools/funnel-http-client",
+  "description": "A throttler for symfony/http-client to handle rate limits",
+  "keywords": [
+    "http",
+    "client",
+    "symfony",
+    "httpclient",
+    "decorator",
+    "throttler",
+    "throttling",
+    "rate-limit"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Beno!t POLASZEK"
+    }
+  ],
+  "require": {
+    "symfony/http-client": "~4.0",
+    "psr/log": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~7.0",
+    "squizlabs/php_codesniffer": "~2.0",
+    "symfony/var-dumper": "~4.0",
+    "php-coveralls/php-coveralls": "2.1",
+    "phpstan/phpstan": "~0.11.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "BenTools\\FunnelHttpClient\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BenTools\\FunnelHttpClient\\Tests\\": "tests"
+    },
+    "files": [
+      "vendor/symfony/var-dumper/Resources/functions/dump.php"
+    ]
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
+}
