@@ -5,7 +5,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/bpolaszek/funnel-http-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/bpolaszek/funnel-http-client)
 [![Total Downloads](https://poser.pugx.org/bentools/funnel-http-client/downloads)](https://packagist.org/packages/bentools/funnel-http-client)
 
-# Funnel Http Client
+# :vertical_traffic_light: Funnel Http Client
 
 A decorator for [symfony/http-client](https://symfony.com/doc/current/components/http_client.html) to throttle requests subject to rate-limits.
 
