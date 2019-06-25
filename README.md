@@ -17,13 +17,15 @@ A decorator for [symfony/http-client](https://symfony.com/doc/current/components
 
 ```php
 use BenTools\FunnelHttpClient\FunnelHttpClient;
-use BenTools\FunnelHttpClient\Storage\ArrayStorage;
 use Symfony\Component\HttpClient\HttpClient;
 
-$storage = new ArrayStorage($maxRequests = 10, $timeWindow = 60);
-$client = new FunnelHttpClient(HttpClient::create(), $storage);
+$client = FunnelHttpClient::throttle(HttpClient::create(), $maxRequests = 3, $timeWindow = 5);
 
 $client->request('GET', 'http://foo.bar');
+$client->request('GET', 'http://foo.bar');
+$client->request('GET', 'http://foo.bar');
+
+$client->request('GET', 'http://foo.bar'); // Will wait a little before being actually triggered
 ```
 
 ## Tests

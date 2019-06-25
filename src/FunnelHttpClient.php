@@ -2,6 +2,7 @@
 
 namespace BenTools\FunnelHttpClient;
 
+use BenTools\FunnelHttpClient\Storage\ArrayStorage;
 use BenTools\FunnelHttpClient\Storage\ThrottleStorageInterface;
 use BenTools\FunnelHttpClient\Strategy\AlwaysThrottleStrategy;
 use BenTools\FunnelHttpClient\Strategy\ThrottleStrategyInterface;
@@ -63,7 +64,7 @@ final class FunnelHttpClient implements HttpClientInterface
         }
 
         if (0 === $this->throttleStorage->getRemainingCalls()) {
-            $this->throttle($method, $url);
+            $this->waitUntilReady($method, $url);
         }
 
         $response = $this->decorated->request($method, $url, $options);
@@ -83,7 +84,7 @@ final class FunnelHttpClient implements HttpClientInterface
      * @param string $method
      * @param string $url
      */
-    private function throttle(string $method, string $url): void
+    private function waitUntilReady(string $method, string $url): void
     {
         $remainingSeconds = $this->throttleStorage->getRemainingTime();
         $this->logger->info(\sprintf('Max requests / window reached. Waiting %s seconds...', $remainingSeconds), ['method' => $method, 'url' => $url]);
@@ -93,5 +94,17 @@ final class FunnelHttpClient implements HttpClientInterface
         } else {
             \usleep((int) \round($remainingSeconds * 1000000));
         }
+    }
+
+    /**
+     * @param HttpClientInterface  $client
+     * @param int                  $maxRequests
+     * @param float                $timeWindow
+     * @param LoggerInterface|null $logger
+     * @return FunnelHttpClient
+     */
+    public static function throttle(HttpClientInterface $client, int $maxRequests, float $timeWindow, ?LoggerInterface $logger = null): self
+    {
+        return new self($client, new ArrayStorage($maxRequests, $timeWindow), null, $logger);
     }
 }

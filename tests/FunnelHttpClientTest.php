@@ -22,8 +22,7 @@ class FunnelHttpClientTest extends TestCase
             }
         );
 
-        $storage = new ArrayStorage($maxRequests = 2, $timeWindow = 3);
-        $client = new FunnelHttpClient($mocked, $storage);
+        $client = FunnelHttpClient::throttle($mocked, $maxRequests = 2, $timeWindow = 3);
         $times = [];
 
         $start = \time();
