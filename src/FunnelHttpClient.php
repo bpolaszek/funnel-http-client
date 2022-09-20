@@ -77,15 +77,4 @@ final class FunnelHttpClient implements HttpClientInterface
     {
         return new self($client, new ArrayStorage($maxRequests, $timeWindow), null, $logger);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function withOptions(array $options): static
-    {
-        $clone = clone $this;
-        $clone->client = $this->decorated->withOptions($options);
-
-        return $clone;
-    }
 }
