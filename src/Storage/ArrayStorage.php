@@ -4,33 +4,14 @@ namespace BenTools\FunnelHttpClient\Storage;
 
 final class ArrayStorage implements ThrottleStorageInterface
 {
-    /**
-     * @var int
-     */
-    private $maxRequests;
+    private int $currentRequests = 0;
 
-    /**
-     * @var float
-     */
-    private $timeWindow;
+    private float|null $startedAt = null;
 
-    /**
-     * @var int
-     */
-    private $currentRequests = 0;
-
-    /**
-     * @var float|null
-     */
-    private $startedAt;
-
-    /**
-     * ArrayStorage constructor.
-     */
-    public function __construct(int $maxRequests, float $timeWindow)
-    {
-        $this->maxRequests = $maxRequests;
-        $this->timeWindow = $timeWindow;
+    public function __construct(
+        private int $maxRequests,
+        private float $timeWindow
+    ) {
     }
 
     /**
@@ -69,18 +50,12 @@ final class ArrayStorage implements ThrottleStorageInterface
         $this->currentRequests++;
     }
 
-    /**
-     *
-     */
     private function reset()
     {
         $this->currentRequests = 0;
         $this->startedAt = null;
     }
 
-    /**
-     * @return bool
-     */
     private function isExpired(): bool
     {
         if (null === $this->startedAt) {
