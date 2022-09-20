@@ -14,42 +14,12 @@ use Symfony\Contracts\HttpClient\ResponseStreamInterface;
 
 final class FunnelHttpClient implements HttpClientInterface
 {
-    /**
-     * @var HttpClientInterface
-     */
-    private $decorated;
-
-    /**
-     * @var ThrottleStorageInterface
-     */
-    private $throttleStorage;
-
-    /**
-     * @var ThrottleStrategyInterface|null
-     */
-    private $throttleStrategy;
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private $logger;
-
-    /**
-     * FunnelHttpClient constructor.
-     *
-     * @param HttpClientInterface            $decorated
-     * @param ThrottleStorageInterface       $throttleStorage
-     * @param ThrottleStrategyInterface|null $throttleStrategy
-     * @param LoggerInterface|null           $logger
-     */
     public function __construct(
-        HttpClientInterface $decorated,
-        ThrottleStorageInterface $throttleStorage,
-        ?ThrottleStrategyInterface $throttleStrategy = null,
-        ?LoggerInterface $logger = null
+        private HttpClientInterface $decorated,
+        private ThrottleStorageInterface $throttleStorage,
+        private ?ThrottleStrategyInterface $throttleStrategy = null,
+        private ?LoggerInterface $logger = null
     ) {
-        $this->decorated = $decorated;
-        $this->throttleStorage = $throttleStorage;
         $this->throttleStrategy = $throttleStrategy ?? new AlwaysThrottleStrategy();
         $this->logger = $logger ?? new NullLogger();
     }
@@ -106,5 +76,16 @@ final class FunnelHttpClient implements HttpClientInterface
     public static function throttle(HttpClientInterface $client, int $maxRequests, float $timeWindow, ?LoggerInterface $logger = null): self
     {
         return new self($client, new ArrayStorage($maxRequests, $timeWindow), null, $logger);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withOptions(array $options): static
+    {
+        $clone = clone $this;
+        $clone->client = $this->decorated->withOptions($options);
+
+        return $clone;
     }
 }
