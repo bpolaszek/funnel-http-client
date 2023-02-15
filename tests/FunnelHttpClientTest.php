@@ -3,7 +3,6 @@
 namespace BenTools\FunnelHttpClient\Tests;
 
 use BenTools\FunnelHttpClient\FunnelHttpClient;
-use BenTools\FunnelHttpClient\Storage\ArrayStorage;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -14,7 +13,7 @@ class FunnelHttpClientTest extends TestCase
     /**
      * @test
      */
-    function it_throttles()
+    public function it_throttles(): void
     {
         $mocked = new MockHttpClient(
             function () {
@@ -38,6 +37,26 @@ class FunnelHttpClientTest extends TestCase
         $this->assertCount(5, $times);
         $this->assertEquals(2, \array_sum($times) / count($times));
         $this->assertGreaterThan(6, \time() - $start);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_valid_clone(): void
+    {
+        $mocked = new MockHttpClient(
+            function () {
+                return new MockResponse(\time());
+            }
+        );
+
+        $a = FunnelHttpClient::throttle($mocked, $maxRequests = 10, $timeWindow = 1);
+        $b = $a->withOptions(['foo' => 'bar']);
+        $this->assertNotSame($a, $b);
+
+        $refl = new \ReflectionProperty(FunnelHttpClient::class, 'decorated');
+        $refl->setAccessible(true);
+        $this->assertNotSame($refl->getValue($a), $refl->getValue($b));
     }
 
 }
