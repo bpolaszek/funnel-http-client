@@ -6,11 +6,14 @@ use BenTools\FunnelHttpClient\Storage\ArrayStorage;
 use BenTools\FunnelHttpClient\Storage\ThrottleStorageInterface;
 use BenTools\FunnelHttpClient\Strategy\AlwaysThrottleStrategy;
 use BenTools\FunnelHttpClient\Strategy\ThrottleStrategyInterface;
+use LogicException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
+
+use function method_exists;
 
 final class FunnelHttpClient implements HttpClientInterface
 {
@@ -22,6 +25,19 @@ final class FunnelHttpClient implements HttpClientInterface
     ) {
         $this->throttleStrategy = $throttleStrategy ?? new AlwaysThrottleStrategy();
         $this->logger = $logger ?? new NullLogger();
+    }
+
+    public function withOptions(array $options): static
+    {
+        // SF 5+ compatibility
+        if (!method_exists($this->decorated, 'withOptions')) {
+            throw new LogicException('%s doesn\'t implement `withOptions`.');
+        }
+
+        $clone = clone $this;
+        $clone->decorated = $clone->decorated->withOptions($options);
+
+        return $clone;
     }
 
     /**
