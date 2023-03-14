@@ -11,7 +11,7 @@ A decorator for [symfony/http-client](https://symfony.com/doc/current/components
 
 ## Installation
 
-> composer require bentools/funnel-http-client:1.0.x-dev
+> composer require bentools/funnel-http-client:^1.0
 
 ## Usage
 
