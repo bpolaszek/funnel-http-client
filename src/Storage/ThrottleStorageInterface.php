@@ -22,4 +22,9 @@ interface ThrottleStorageInterface
      * Add a call to the current time window.
      */
     public function increment(): void;
+
+    /**
+     * Remove a call from the current time window.
+     */
+    public function decrement(): void;
 }

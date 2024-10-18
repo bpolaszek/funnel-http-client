@@ -9,6 +9,7 @@ use BenTools\FunnelHttpClient\Strategy\ThrottleStrategyInterface;
 use LogicException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\HttpClient\ResponseStreamInterface;
@@ -53,8 +54,14 @@ final class FunnelHttpClient implements HttpClientInterface
             $this->waitUntilReady($method, $url);
         }
 
-        $response = $this->decorated->request($method, $url, $options);
         $this->throttleStorage->increment();
+        try {
+            $response = $this->decorated->request($method, $url, $options);
+        } catch (TransportExceptionInterface $e) {
+            $this->throttleStorage->decrement();
+            throw $e;
+        }
+
         return $response;
     }
 
