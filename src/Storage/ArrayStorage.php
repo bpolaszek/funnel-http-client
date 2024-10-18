@@ -50,7 +50,16 @@ final class ArrayStorage implements ThrottleStorageInterface
         $this->currentRequests++;
     }
 
-    private function reset()
+    public function decrement(): void
+    {
+        $this->currentRequests--;
+        if ($this->currentRequests <= 0) {
+            $this->reset();
+        }
+    }
+
+
+    private function reset(): void
     {
         $this->currentRequests = 0;
         $this->startedAt = null;
