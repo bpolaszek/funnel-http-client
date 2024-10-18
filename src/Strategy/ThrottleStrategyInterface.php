@@ -4,7 +4,6 @@ namespace BenTools\FunnelHttpClient\Strategy;
 
 interface ThrottleStrategyInterface
 {
-
     /**
      * Return wether or not this request should be throttled.
      *

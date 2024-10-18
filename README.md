@@ -1,6 +1,6 @@
 [![Latest Stable Version](https://poser.pugx.org/bentools/funnel-http-client/v/stable)](https://packagist.org/packages/bentools/funnel-http-client)
 [![License](https://poser.pugx.org/bentools/funnel-http-client/license)](https://packagist.org/packages/bentools/funnel-http-client)
-[![Build Status](https://img.shields.io/travis/bpolaszek/funnel-http-client/master.svg?style=flat-square)](https://travis-ci.org/bpolaszek/funnel-http-client)
+[![CI Workflow](https://github.com/bpolaszek/funnel-http-client/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/bpolaszek/funnel-http-client/actions/workflows/ci-workflow.yml)
 [![Coverage Status](https://coveralls.io/repos/github/bpolaszek/funnel-http-client/badge.svg?branch=master)](https://coveralls.io/github/bpolaszek/funnel-http-client?branch=master)
 [![Quality Score](https://img.shields.io/scrutinizer/g/bpolaszek/funnel-http-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/bpolaszek/funnel-http-client)
 [![Total Downloads](https://poser.pugx.org/bentools/funnel-http-client/downloads)](https://packagist.org/packages/bentools/funnel-http-client)
