@@ -68,7 +68,7 @@ final class FunnelHttpClient implements HttpClientInterface
     /**
      * @inheritDoc
      */
-    public function stream($responses, float $timeout = null): ResponseStreamInterface
+    public function stream($responses, ?float $timeout = null): ResponseStreamInterface
     {
         return $this->decorated->stream($responses, $timeout);
     }
