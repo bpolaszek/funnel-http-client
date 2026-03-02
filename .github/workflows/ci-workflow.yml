@@ -17,7 +17,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.5
           extensions: mbstring, pcntl
 
       - name: Validate composer.json and composer.lock
@@ -42,6 +42,7 @@ jobs:
           - 8.2
           - 8.3
           - 8.4
+          - 8.5
 
     steps:
       - name: Checkout
